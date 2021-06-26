@@ -15,11 +15,8 @@ def get_category_items(category, master_dict = {}):
         
         next = response['next']
 
-        if item_identifier != 'name' or item_identifier != 'title':
-            if not items[0].get('name'):
-                item_identifier = 'title'
-            else:
-                item_identifier = 'name'
+        if not item_identifier: 
+            item_identifier = 'title' if not items[0].get('name') else 'name'
 
     ####
 
