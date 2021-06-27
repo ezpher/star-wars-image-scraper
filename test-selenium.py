@@ -31,4 +31,4 @@ driver.back()
 driver.back()
 driver.back()
 
-driver.close()
+driver.quit()
