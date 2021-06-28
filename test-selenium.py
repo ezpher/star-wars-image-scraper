@@ -1,4 +1,5 @@
 from selenium import webdriver
+from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -6,19 +7,20 @@ from selenium.webdriver.support import expected_conditions as EC
 import time
 
 PATH = 'C:\Program Files (x86)\chromedriver.exe'
+
 options = webdriver.ChromeOptions()
 options.add_argument('--start-maximized')
-driver = webdriver.Chrome(PATH, options=options)
 
-driver.get('https://starwars.fandom.com/wiki/Main_Page')
+caps = DesiredCapabilities().CHROME
+caps['pageLoadStrategy'] = 'none'
 
-search = driver.find_element_by_name('query') 
-search.clear()
-search.send_keys("Luke Skywalker")
-search.send_keys(Keys.RETURN)
+driver = webdriver.Chrome(executable_path=PATH, desired_capabilities=caps, options=options)
+search_terms = 'luke skywalker'
+url = f'https://starwars.fandom.com/wiki/Special:Search?query={search_terms}&scope=internal&navigationSearch=true'.replace(' ', '+')
+driver.get(url)
 
 try:
-    first_link = WebDriverWait(driver, 10).until(
+    first_link = WebDriverWait(driver, 5).until(
         EC.presence_of_element_located((By.CLASS_NAME, "unified-search__result__title"))
     )
 except:
