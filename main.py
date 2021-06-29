@@ -32,11 +32,17 @@ def get_category_items(category, master_dict = {}):
 
     return categories
 
-def data_to_textfile(data):
-
+def get_output_filepath():
+    
     curr_dir = os.path.dirname(__file__)
     rel_path = 'output\output.txt' # for windows os
     abs_path = os.path.join(curr_dir, rel_path)
+
+    return abs_path
+
+def data_to_textfile(data):
+
+    abs_path = get_output_filepath()
 
     print('output file: ', abs_path)
 
@@ -47,12 +53,12 @@ def data_to_textfile(data):
 if __name__ == '__main__':
 
     categories = {}
-    categories = get_category_items('people', categories)
-    categories = get_category_items('films', categories)
-    categories = get_category_items('starships', categories)
-    categories = get_category_items('vehicles', categories)
+    # categories = get_category_items('people', categories)
+    # categories = get_category_items('films', categories)
+    # categories = get_category_items('starships', categories)
+    # categories = get_category_items('vehicles', categories)
     categories = get_category_items('species', categories)
-    categories = get_category_items('planets', categories)
+    # categories = get_category_items('planets', categories)
 
     data_to_textfile(categories)
 
