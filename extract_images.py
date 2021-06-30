@@ -6,7 +6,7 @@ from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
-from main import get_output_filepath
+from extract_categories import get_output_filepath
 from pathlib import Path
 import urllib.request
 import os
