@@ -28,7 +28,12 @@ def get_category_items(category, master_dict = {}):
         if f'{category}' not in categories:
             categories[f'{category}'] = []
 
-        categories[f'{category}'].append({f'{item_id}': item[item_identifier]})
+        categories[f'{category}'].append(
+            {
+                'category': f'{category}', 
+                f'{item_id + 1}': item[item_identifier], 
+                'search_terms': 'Star Wars: Episode ' + item[item_identifier] if category == 'films' else item[item_identifier]    
+            })
 
     return categories
 
@@ -44,21 +49,20 @@ def data_to_textfile(data):
 
     abs_path = get_output_filepath()
 
-    print('output file: ', abs_path)
-
     with open(abs_path, 'wt') as output_file:
         json.dump(data, output_file)
 
+    print('output file: ', abs_path)
 
 if __name__ == '__main__':
 
     categories = {}
-    # categories = get_category_items('people', categories)
-    # categories = get_category_items('films', categories)
-    # categories = get_category_items('starships', categories)
-    # categories = get_category_items('vehicles', categories)
+    categories = get_category_items('people', categories)
+    categories = get_category_items('films', categories)
+    categories = get_category_items('starships', categories)
+    categories = get_category_items('vehicles', categories)
     categories = get_category_items('species', categories)
-    # categories = get_category_items('planets', categories)
+    categories = get_category_items('planets', categories)
 
     data_to_textfile(categories)
 
