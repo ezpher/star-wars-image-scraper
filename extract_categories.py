@@ -55,6 +55,7 @@ def data_to_textfile(data):
 
     print('output file: ', abs_path)
 
+
 if __name__ == '__main__':
 
     categories = {}

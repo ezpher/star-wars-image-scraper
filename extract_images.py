@@ -47,6 +47,8 @@ def get_categories_from_output():
 
 def loop_thru_categories(driver: WebDriver, categories: dict):
 
+    empty_images = {}
+
     try:
         for category in categories:   
             for item in categories[category]:
@@ -77,8 +79,10 @@ def loop_thru_categories(driver: WebDriver, categories: dict):
                     download_image(image, item)
                 except TimeoutException:
                     print('no image for: ', search_terms)
+                    log_empty_image(item, empty_images)
                     continue
     finally:
+        empty_images_to_textfile(empty_images)
         driver.quit()   
 
 def download_image(image: WebElement, item: dict):
@@ -93,6 +97,25 @@ def download_image(image: WebElement, item: dict):
     urllib.request.urlretrieve(url=image_url, filename=file_path)
     
     print('output image file: ', file_path)
+
+def log_empty_image(category_item: dict, master_dict={}):
+    if 'empty_images' not in master_dict:
+        master_dict['empty_images'] = []
+    
+    master_dict['empty_images'].append(category_item)
+
+    return master_dict
+
+def empty_images_to_textfile(master_dict: dict):  
+
+    curr_dir = os.path.dirname(__file__)
+    rel_path = 'output\empty_images.txt'
+    abs_path = os.path.join(curr_dir, rel_path)
+
+    with open(abs_path, 'wt') as output_file:
+        json.dump(master_dict, output_file)
+
+    print('empty images file: ', abs_path)
 
 
 if __name__ == '__main__':
