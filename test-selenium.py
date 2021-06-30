@@ -6,6 +6,7 @@ from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from main import get_output_filepath
+import urllib.request
 import os
 import json
 
@@ -42,38 +43,61 @@ def get_categories_from_output():
 
     return categories
 
-def test_looping(driver: WebDriver, categories: dict):
-        
-    if 'species' in categories:
+def loop_thru_categories(driver: WebDriver, categories: dict):
 
-        for (index, person) in enumerate(categories['species']):
+    for category in categories:   
+        for item in categories[category]:
+
             search_terms = ''
-            search_terms = person[f'{index}']
+            search_terms = item['search_terms']
 
             url = f'https://starwars.fandom.com/wiki/Special:Search?query={search_terms}&scope=internal&navigationSearch=true'.replace(' ', '+')
             driver.get(url)
 
             try:
-                first_link: WebElement = WebDriverWait(driver, 10).until(
-                    EC.presence_of_element_located((By.CLASS_NAME, "unified-search__result__title"))
+                first_link: WebElement = WebDriverWait(driver, 5).until(
+                    EC.presence_of_element_located((By.CLASS_NAME, 'unified-search__result__title'))
                 )
                 first_link.click()
+
+                image: WebElement = WebDriverWait(driver, 10).until(
+                    EC.presence_of_element_located((By.CLASS_NAME, 'pi-image-thumbnail'))
+                )
+
+                download_image(image, item)
 
             # in case DOM element cannot be found e.g. ad popup changes DOM structure after link element has been assigned, so now no reference
             except:
-                first_link: WebElement = WebDriverWait(driver, 10).until(
-                    EC.presence_of_element_located((By.CLASS_NAME, "unified-search__result__title"))
+                first_link: WebElement = WebDriverWait(driver, 5).until(
+                    EC.presence_of_element_located((By.CLASS_NAME, 'unified-search__result__title'))
                 )
                 first_link.click()
 
-            finally:
-                print(search_terms)
+                image: WebElement = WebDriverWait(driver, 10).until(
+                    EC.presence_of_element_located((By.CLASS_NAME, 'pi-image-thumbnail'))
+                )
 
-    driver.quit()            
+                download_image(image, item)
+
+            finally:
+                print('search terms: ', search_terms)
+
+    driver.quit()   
+
+def download_image(image: WebElement, item: dict):
+    image_url = image.get_attribute("src")
+    
+    abs_path = os.path.dirname(__file__)
+    rel_path = f'output\images\{item["category"]}-{str(item["id"])}.jpg'
+    file_path = os.path.join(abs_path, rel_path)
+
+    print('output image file: ', file_path)
+    urllib.request.urlretrieve(url=image_url, filename=file_path)
+
 
 if __name__ == '__main__':
     categories = get_categories_from_output()
     print(categories)
 
     driver = create_chrome_driver()
-    test_looping(driver, categories)
+    loop_thru_categories(driver, categories)

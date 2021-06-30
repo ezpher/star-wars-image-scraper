@@ -31,7 +31,8 @@ def get_category_items(category, master_dict = {}):
         categories[f'{category}'].append(
             {
                 'category': f'{category}', 
-                f'{item_id + 1}': item[item_identifier], 
+                'id': int(item_id + 1),
+                f'{item_identifier}': item[item_identifier], 
                 'search_terms': 'Star Wars: Episode ' + item[item_identifier] if category == 'films' else item[item_identifier]    
             })
 
@@ -57,12 +58,12 @@ def data_to_textfile(data):
 if __name__ == '__main__':
 
     categories = {}
-    categories = get_category_items('people', categories)
+    # categories = get_category_items('people', categories)
     categories = get_category_items('films', categories)
-    categories = get_category_items('starships', categories)
-    categories = get_category_items('vehicles', categories)
-    categories = get_category_items('species', categories)
-    categories = get_category_items('planets', categories)
+    # categories = get_category_items('starships', categories)
+    # categories = get_category_items('vehicles', categories)
+    # categories = get_category_items('species', categories)
+    # categories = get_category_items('planets', categories)
 
     data_to_textfile(categories)
 
