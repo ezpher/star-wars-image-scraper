@@ -6,6 +6,7 @@ from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from main import get_output_filepath
+from pathlib import Path
 import urllib.request
 import os
 import json
@@ -88,11 +89,14 @@ def download_image(image: WebElement, item: dict):
     image_url = image.get_attribute("src")
     
     abs_path = os.path.dirname(__file__)
-    rel_path = f'output\images\{item["category"]}-{str(item["id"])}.jpg'
-    file_path = os.path.join(abs_path, rel_path)
+    dir_path = f'output\images\{item["category"]}'
+    rel_path = f'{item["category"]}-{str(item["id"])}.jpg'
+    file_path = os.path.join(abs_path, dir_path, rel_path)
 
-    print('output image file: ', file_path)
+    Path(dir_path).mkdir(parents=True, exist_ok=True)
     urllib.request.urlretrieve(url=image_url, filename=file_path)
+    
+    print('output image file: ', file_path)
 
 
 if __name__ == '__main__':
