@@ -58,12 +58,12 @@ def data_to_textfile(data):
 if __name__ == '__main__':
 
     categories = {}
-    # categories = get_category_items('people', categories)
+    categories = get_category_items('people', categories)
     categories = get_category_items('films', categories)
-    # categories = get_category_items('starships', categories)
-    # categories = get_category_items('vehicles', categories)
-    # categories = get_category_items('species', categories)
-    # categories = get_category_items('planets', categories)
+    categories = get_category_items('starships', categories)
+    categories = get_category_items('vehicles', categories)
+    categories = get_category_items('species', categories)
+    categories = get_category_items('planets', categories)
 
     data_to_textfile(categories)
 
