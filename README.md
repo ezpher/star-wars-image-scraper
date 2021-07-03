@@ -8,7 +8,7 @@ This is a proof-of-concept scraper, in python, that scrapes images from wookieep
 
 - running `extract_categories.py` will obtain the list of items grouped by categories e.g. people, vehicles, planets etc. from the swapi API, and output in json to an output text file `output.txt`
 
-- running `extract_images.py` will deserialize the output file from previous step into a python object containg the categories and their items
+- running `extract_images.py` will deserialize the output file from previous step into a python object containing the categories and their items
   - using selenium, it will then search the wookieepedia website to download the image that corresponds to each category item, using the search term associated with each item
   - it does this for each category item, looping through all categories. 
   - all images are downloaded to the `images` folder
@@ -21,11 +21,12 @@ This is a proof-of-concept scraper, in python, that scrapes images from wookieep
 ## Installation
 
 1. Clone this repository
-2. Create a virtual python environment using `venv`
+2. Create a virtual python environment using `venv`. Python version is 3.9.5.
 3. Activate the virtual environment by navigating to the virtual environment's scripts folder and executing the `activate.bat` file
 4. `pip install -r requirements.txt` to download all third-party packages
-5. Run `extract_categories.py` first
-6. Next, run `extract_images.py`
+5. Based on your current chrome browser version, install selenium chromedriver in the path stated in `extract_images.py` i.e. `C:\Program Files (x86)\chromedriver.exe`. You can download the relevant version at https://chromedriver.chromium.org/downloads
+6. Run `extract_categories.py` first
+7. Next, run `extract_images.py`
 
 ## Potential Improvements 
 
